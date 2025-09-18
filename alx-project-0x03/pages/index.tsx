@@ -1,4 +1,4 @@
-import { HomeProps } from "@/interface";
+import { PageRouteProps } from "@/interface";
 
 export default function Home({ title, description }: HomeProps) {
   return (

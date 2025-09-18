@@ -1,15 +1,16 @@
-import { useState } from 'react';
+// pages/counter-app.tsx
+import React from "react"
+import { useSelector } from "react-redux"
+import { RootState, AppDispatch } from "@/store/store"
+import { useAppDispatch } from "@/store/hooks"
+import { increment, decrement } from "@/store/counterSlice"
 
 const CounterApp: React.FC = () => {
-  const [count, setCount] = useState(0);
+  // ✅ Get count from Redux state
+  const count = useSelector((state: RootState) => state.counter.value)
 
-  const increment = () => {
-    setCount(count + 1);
-  };
-
-  const decrement = () => {
-    setCount(count > 0 ? count - 1 : 0);
-  };
+  // ✅ Get dispatch function
+  const dispatch: AppDispatch = useAppDispatch()
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-yellow-400 to-pink-500 flex flex-col justify-center items-center text-white">
@@ -18,24 +19,27 @@ const CounterApp: React.FC = () => {
 
       {/* Funny message */}
       <p className="text-lg font-medium mb-4">
-        Current count: {count} {count === 0 ? "🙈 No clicks yet!" : count % 10 === 0 && count !== 0 ? "🔥 You're on fire!" : ""}
+        Current count: {count}{" "}
+        {count === 0
+          ? "🙈 No clicks yet!"
+          : count % 10 === 0 && count !== 0
+          ? "🔥 You're on fire!"
+          : ""}
       </p>
 
       {/* Counter Display */}
-      <div className="text-6xl font-bold mb-8">
-        {count}
-      </div>
+      <div className="text-6xl font-bold mb-8">{count}</div>
 
       {/* Buttons */}
       <div className="flex space-x-4">
         <button
-          onClick={increment}
+          onClick={() => dispatch(increment())}
           className="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg transform hover:scale-105"
         >
           Increment 🚀
         </button>
         <button
-          onClick={decrement}
+          onClick={() => dispatch(decrement())}
           className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg transform hover:scale-105"
         >
           Decrement 👎
@@ -47,7 +51,7 @@ const CounterApp: React.FC = () => {
         Keep clicking, who knows what happens at 100? 😏
       </p>
     </div>
-  );
+  )
 }
 
-export default CounterApp;
+export default CounterApp
